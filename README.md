@@ -109,7 +109,7 @@ Make sure you have the following installed:
    - ![Add Modal](./images/Addmodal.png)
 
 4. **Edit Todo**:
-   - ![Edit Modal](./images/EditModal.png)
+   - ![Edit Modal](./images/Editmodal.png)
 
 ## Contributing
 
