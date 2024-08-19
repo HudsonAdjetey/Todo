@@ -1,10 +1,11 @@
 import React, { useState } from "react";
+import { getData } from "./fn";
 
 const Modal = ({ modeValue = "edit", modalShow, setShowModal, task }) => {
   const mode = modeValue;
   const editMode = mode === "edit";
   const [data, setData] = useState({
-    user_email: editMode ? task?.user_email : "",
+    user_email: editMode ? task?.user_email : "test@gmail.com",
     title: editMode ? task?.title : "",
     progress: editMode ? task?.progress : 50,
     date: editMode ? "" : new Date(),
@@ -18,16 +19,25 @@ const Modal = ({ modeValue = "edit", modalShow, setShowModal, task }) => {
     });
   };
 
-  const postData = () => {
+  const postData = async (e) => {
+    console.log(data);
+    e.preventDefault();
     try {
-      fetch("http://localhost:5294/post-data", {
-        method: editMode ? "PUT" : "POST",
+      const resp = await fetch("http://localhost:5294/todos", {
+        method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(data),
       });
-    } catch (error) {}
+      if (resp.status === 201) {
+        console.log("success");
+        setShowModal(false);
+        // getData("test@gmail.com");
+      }
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
@@ -70,7 +80,11 @@ const Modal = ({ modeValue = "edit", modalShow, setShowModal, task }) => {
             value={Number(data.progress)}
             onChange={handleChange}
           />
-          <input type="submit" className={mode} />
+          <input
+            type="submit"
+            className={mode}
+            onClick={editMode ? "" : postData}
+          />
         </form>
       </div>
     </div>

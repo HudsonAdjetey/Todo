@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import TickIcon from "./TickIcon";
 import ProgressBar from "./ProgressBar";
 import Modal from "./Modal";
@@ -17,7 +17,9 @@ const ListItem = ({ task }) => {
       <div className="button-container">
         <button
           className="edit-button"
-          onClick={() => setShowModal(!showModal)}
+          onClick={() => {
+            setShowModal(true);
+          }}
         >
           EDIT
         </button>
@@ -30,6 +32,7 @@ const ListItem = ({ task }) => {
           modalShow={showModal}
           setShowModal={setShowModal}
           task={task}
+          getData={getData}
         />
       )}
     </li>

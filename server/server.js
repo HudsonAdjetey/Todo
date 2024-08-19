@@ -3,12 +3,13 @@ const path = require("path");
 const express = require("express");
 const pool = require("./db.config");
 const app = express();
-const PORT = process.env.PORT || 5614;
+const PORT = process.env.PORT || 5294;
 const cors = require("cors");
 const { v4: uuid } = require("uuid");
 
 app.use(express());
 app.use(cors());
+app.use(express.json());
 app.use(express.static(path.join(__dirname, "public")));
 
 app.get("/todos/:userEmail", async (req, res, next) => {
