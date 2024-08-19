@@ -73,6 +73,49 @@ app.delete("/todos/:id", async (req, res, next) => {
   }
 });
 
+
+// signup
+
+app.post("/signup", async (req, res, next) => {
+  try {
+    const { email, password } = req.body;
+    const response = await pool.query(
+      `INSERT INTO users (email, password) VALUES ($1, $2) RETURNING *`,
+      [email, password]
+    );
+    return res.status(201).json(response.rows[0]);
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+});
+
+// login
+
+app.post("/login", async (req, res, next) => {
+  try {
+    const { email, password } = req.body;
+    const response = await pool.query(
+      `SELECT * FROM users WHERE email=$1`,
+      [email]
+    );
+    if (response.rows.length === 0) {
+      return res.status(401).json({ message: "Invalid credentials" });
+    }
+    const validPassword = await bcrypt.compare(password, response.rows[0].password);
+    if (!validPassword) {
+      return res.status(401).json({ message: "Invalid credentials" });
+    }
+    const token = jwt.sign({ userId: response.rows[0].id }, process.env.JWT_SECRET);
+    return res.json({ token });
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+});
+
+
+
 // all
 app.use("*", (_, res, next) => {
   const format = _.accepts(["json", "html", "text"]);
