@@ -2,9 +2,12 @@ import React, { useEffect, useState } from "react";
 import ListHeader from "./components/ListHeader";
 import ListItem from "./components/ListItem";
 import { getData as fnData } from "./components/fn";
+import Auth from "./components/Auth";
 
 const App = () => {
+  const authToken = false;
   const fetchDatas = fnData("test@gmail.com");
+
   const [tasks, setTaks] = useState([]);
   const getData = async () => {
     try {
@@ -20,7 +23,7 @@ const App = () => {
   };
 
   useEffect(() => {
-    getData();
+    if (authToken) getData();
   }, []);
 
   const handleDelete = async (task) => {
@@ -50,15 +53,21 @@ const App = () => {
 
   return (
     <div className="app">
-      <ListHeader listName={"Todo-App"} />
-      {sortedTasks?.map((task) => (
-        <ListItem
-          key={task.id}
-          task={task}
-          getData={fetchDatas}
-          deleteFn={() => handleDelete(task)}
-        />
-      ))}
+      {authToken ? (
+        <>
+          <ListHeader listName={"Todo-App"} />
+          {sortedTasks?.map((task) => (
+            <ListItem
+              key={task.id}
+              task={task}
+              getData={fetchDatas}
+              deleteFn={() => handleDelete(task)}
+            />
+          ))}
+        </>
+      ) : (
+        <Auth />
+      )}
     </div>
   );
 };

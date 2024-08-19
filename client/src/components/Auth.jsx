@@ -15,19 +15,19 @@ const Auth = () => {
           <input type="email" placeholder="Email" />
           <input type="password" placeholder="Password" />
           {!isLogin && <input type="password" placeholder="Confirm Password" />}
-          <input type="submit" value="" className="create" />
+          <input type="submit" value="Submit" className="create" />
           <p>{error}</p>
         </form>
       </div>
       <div className="auth-options">
         <button
           onClick={() => viewLogin(false)}
-          style={{ background: !isLogin ? "white" : "rgb(188, 188, 1880" }}
+          style={{ background: !isLogin ? "white" : "rgb(188, 188, 180" }}
         >
           Sign Up
         </button>
         <button
-          style={{ background: isLogin ? "white" : "rgb(188, 188, 1880" }}
+          style={{ background: isLogin ? "white" : "rgb(188, 188, 180" }}
           onClick={() => viewLogin(true)}
         >
           Login
