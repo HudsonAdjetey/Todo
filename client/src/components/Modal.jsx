@@ -7,7 +7,7 @@ const Modal = ({ modeValue = "edit", modalShow, setShowModal, task }) => {
     user_email: editMode ? task?.user_email : "test@gmail.com",
     title: editMode ? task?.title : "",
     progress: editMode ? task?.progress : 50,
-    date: editMode ? "" : new Date(),
+    date: editMode ? task.date : new Date(),
   });
   const handleChange = (e) => {
     setData((prev) => {
@@ -21,13 +21,18 @@ const Modal = ({ modeValue = "edit", modalShow, setShowModal, task }) => {
   const editData = async (e) => {
     e.preventDefault();
     try {
-      await fetch(`http://localhost:5294/todos/${task.id}`, {
+      const re = await fetch(`${import.meta.env.VITE_SERVER_URL}/${task.id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(data),
       });
+      if (re.status == 200) {
+        setShowModal(false);
+        // revalidate
+        window.location.reload();
+      }
     } catch (error) {
       console.log(error);
     }
@@ -37,7 +42,7 @@ const Modal = ({ modeValue = "edit", modalShow, setShowModal, task }) => {
     console.log(data);
     e.preventDefault();
     try {
-      const resp = await fetch("http://localhost:5294/todos", {
+      const resp = await fetch(import.meta.env.VITE_SERVER_URL, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -47,6 +52,7 @@ const Modal = ({ modeValue = "edit", modalShow, setShowModal, task }) => {
       if (resp.status === 201) {
         console.log("success");
         setShowModal(false);
+        window.location.reload();
       }
     } catch (error) {
       console.error(error);

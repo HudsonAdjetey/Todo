@@ -9,7 +9,7 @@ const App = () => {
   const getData = async () => {
     try {
       const result = await fetch(
-        `http://localhost:5294/todos/${"test@gmail.com"}`
+        `${import.meta.env.VITE_SERVER_URL}/${"test@gmail.com"}`
       );
       const data = await result.json();
       setTaks(data);
@@ -23,6 +23,26 @@ const App = () => {
     getData();
   }, []);
 
+  const handleDelete = async (task) => {
+    try {
+      const res = await fetch(
+        `${import.meta.env.VITE_SERVER_URL}/${task?.id}`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      if (res.status == 204) {
+        console.log(`Deleted todo with id - ${task.id}`);
+        const newItems = tasks.filter((item) => item.id !== task.id);
+        setTaks(newItems);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
   // sort by date
   const sortedTasks = tasks?.sort(
     (a, b) => new Date(a.date) - new Date(b.date)
@@ -32,7 +52,12 @@ const App = () => {
     <div className="app">
       <ListHeader listName={"Todo-App"} />
       {sortedTasks?.map((task) => (
-        <ListItem key={task.id} task={task} getData={fetchDatas} />
+        <ListItem
+          key={task.id}
+          task={task}
+          getData={fetchDatas}
+          deleteFn={() => handleDelete(task)}
+        />
       ))}
     </div>
   );

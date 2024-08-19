@@ -3,17 +3,17 @@ import TickIcon from "./TickIcon";
 import ProgressBar from "./ProgressBar";
 import Modal from "./Modal";
 
-const ListItem = ({ task }) => {
+const ListItem = ({ task, deleteFn }) => {
   const [showModal, setShowModal] = useState(false);
-
+  // handle delete request
   return (
     <li className="list-item">
       <div className="info-container">
         <TickIcon />
         <p className="task-title"> {task.title}</p>
 
-        <ProgressBar progressValue={task.progress} />
       </div>
+        <ProgressBar progressValue={task.progress} />
       <div className="button-container">
         <button
           className="edit-button"
@@ -23,8 +23,9 @@ const ListItem = ({ task }) => {
         >
           EDIT
         </button>
-        <button className="delete-button">DELETE</button>
-        <button className="complete-button">COMPLETE</button>
+        <button className="delete-button" onClick={deleteFn}>
+          DELETE
+        </button>
       </div>
       {showModal && (
         <Modal

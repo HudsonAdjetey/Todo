@@ -15,7 +15,7 @@ app.use(express.static(path.join(__dirname, "public")));
 app.get("/todos/:userEmail", async (req, res, next) => {
   try {
     const response = await pool.query(
-      `SELECT * FROM todos WHERE user_email = $1`,
+      `SELECT * FROM todos WHERE user_email = $1 ORDER BY created_at`,
       [req.params.userEmail]
     );
     res.status(200).json(response.rows);
@@ -34,7 +34,7 @@ app.post("/todos", async (req, res, next) => {
       `INSERT INTO todos (id, user_email, title, progress, date) VALUES ($1, $2, $3, $4, $5) RETURNING *`,
       [id, user_email, title, progress, date]
     );
-    res.status(201).json(response.rows[0]);
+    return res.status(201).json(response.rows[0]);
   } catch (error) {
     console.log(error);
     next(error);
@@ -42,7 +42,7 @@ app.post("/todos", async (req, res, next) => {
 });
 
 // edit todo
-app.put("/todos", async (req, res, next) => {
+app.put("/todos/:id", async (req, res, next) => {
   try {
     const { id } = req.params;
     const { title, progress, user_email, date } = req.body;
@@ -50,9 +50,26 @@ app.put("/todos", async (req, res, next) => {
       `UPDATE todos SET title=$1, progress=$2, user_email=$3, date=$4 WHERE id=$5 RETURNING *`,
       [title, progress, user_email, date, id]
     );
-    res.status(200).json(response.rows[0]);
+    return res.status(200).json(response.rows[0]);
   } catch (error) {
     console.log(error);
+    next(error);
+  }
+});
+
+// delete todo
+
+app.delete("/todos/:id", async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const response = await pool.query(`DELETE FROM todos WHERE id=$1`, [id]);
+    if (response.rowCount === 0) {
+      return res.status(404).json({ message: "Todo not found" });
+    }
+    return res.status(204).send();
+  } catch (error) {
+    console.log(error);
+    next(error);
   }
 });
 
