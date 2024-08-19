@@ -8,7 +8,8 @@ body {
   font-family: sans-serif;
 }
 
-.button-container, .info-container {
+.button-container,
+.info-container {
   display: flex;
   align-items: center;
   gap: 1rem;
@@ -20,6 +21,41 @@ body {
   border-radius: 12px;
   background-color: transparent;
   font-size: 10px;
+}
+
+.edit-button {
+  border: 1.5px solid rgb(141, 181, 145);
+  color: rgb(141, 181, 145);
+  background-color: transparent;
+  text-transform: uppercase;
+}
+.edit-button:hover {
+  background-color: rgb(142, 223, 186);
+  color: white;
+}
+.edit-button:active {
+  border: 1.5px solid rgba(141, 181, 145);
+  background-color: rgb(142, 223, 186);
+  color: white;
+}
+
+.delete-button {
+  border: 1.5px solid rgb(255, 175, 163);
+  color: rgb(255, 175, 163);
+  text-transform: uppercase;
+}
+
+.delete-button:hover {
+  background-color: rgb(255, 208, 172);
+  cursor: pointer;
+  color: white;
+}
+
+.delete-button:active {
+  border: 1.5px solid rgba(255, 175, 163);
+  background-color: rgb(255, 237, 223);
+  color: rgb(255, 175, 163);
+  cursor: pointer;
 }
 
 .app {
@@ -40,11 +76,20 @@ body {
 }
 
 .list-item {
-  width: 100%;
   margin: 10px 0;
   border-radius: 10px;
   box-shadow: rgba(0, 0, 0, 0.08) 0 0 0 1px;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  padding: 0 10px;
+}
+
+.list-item .tick path {
+  fill: #000;
+  stroke: #000;
+  stroke-width: 32px;
+  stroke-linecap: round;
+  transition: transform 0.3s ease-in-out;
+  stroke-miterlimit: 10;
 }
