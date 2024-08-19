@@ -16,13 +16,10 @@ const Auth = () => {
   const handleSubmit = async (e, endpoint) => {
     e.preventDefault();
     if (isLogin) {
-      // validate email and password
       if (!email.includes("@") || password.length < 6) {
         setError("Invalid email or password");
         return;
       }
-      // login logic here
-      //...
     } else {
       // validate email, password and confirm password
       if (
@@ -33,12 +30,15 @@ const Auth = () => {
         setError("Invalid email or password");
         return;
       }
-      // sign up logic here
-      //...
     }
-    // sign up logic here
-    // ...
-    await fetch(`${import.meta.env.VITE_SERVER_URL}/${endpoint}`);
+
+    const res = await fetch(`${import.meta.env.VITE_SERVER_URL}/${endpoint}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password }),
+    });
+    const data = await res.json();
+    console.log(data);
   };
 
   return (
@@ -46,9 +46,26 @@ const Auth = () => {
       <div className="auth-container-box">
         <form action="">
           <h2>{isLogin ? "Please login" : "Please sign up"}</h2>
-          <input type="email" placeholder="Email" />
-          <input type="password" placeholder="Password" />
-          {!isLogin && <input type="password" placeholder="Confirm Password" />}
+          <input
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          {!isLogin && (
+            <input
+              type="password"
+              placeholder="Confirm Password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+            />
+          )}
           <input
             type="submit"
             value="Submit"
