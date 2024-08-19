@@ -1,12 +1,45 @@
 import React, { useState } from "react";
 
 const Auth = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  // confirm password
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [isLogin, setIsLogin] = useState(true);
   const [error, setError] = useState("");
+
   const viewLogin = (status) => {
     setError(null);
     setIsLogin(status);
   };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (isLogin) {
+      // validate email and password
+      if (!email.includes("@") || password.length < 6) {
+        setError("Invalid email or password");
+        return;
+      }
+      // login logic here
+      //...
+    } else {
+      // validate email, password and confirm password
+      if (
+        !email.includes("@") ||
+        password.length < 6 ||
+        confirmPassword !== password
+      ) {
+        setError("Invalid email or password");
+        return;
+      }
+      // sign up logic here
+      //...
+    }
+    // sign up logic here
+    // ...
+  };
+
   return (
     <div className="auth-container">
       <div className="auth-container-box">
