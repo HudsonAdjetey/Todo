@@ -21,11 +21,13 @@ const ListHeader = ({ listName }) => {
           Sign Out
         </button>
       </div>
-      <Modal
-        modeValue="create"
-        modalShow={showModal}
-        setShowModal={setShowModal}
-      />
+      {showModal && (
+        <Modal
+          modeValue="create"
+          modalShow={showModal}
+          setShowModal={setShowModal}
+        />
+      )}
     </div>
   );
 };
