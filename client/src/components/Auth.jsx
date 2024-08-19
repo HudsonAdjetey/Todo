@@ -13,7 +13,7 @@ const Auth = () => {
     setIsLogin(status);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e, endpoint) => {
     e.preventDefault();
     if (isLogin) {
       // validate email and password
@@ -38,6 +38,7 @@ const Auth = () => {
     }
     // sign up logic here
     // ...
+    await fetch(`${import.meta.env.VITE_SERVER_URL}/${endpoint}`);
   };
 
   return (
@@ -48,7 +49,12 @@ const Auth = () => {
           <input type="email" placeholder="Email" />
           <input type="password" placeholder="Password" />
           {!isLogin && <input type="password" placeholder="Confirm Password" />}
-          <input type="submit" value="Submit" className="create" />
+          <input
+            type="submit"
+            value="Submit"
+            className="create"
+            onClick={(e) => handleSubmit(e, isLogin ? "login" : "signup")}
+          />
           <p>{error}</p>
         </form>
       </div>
