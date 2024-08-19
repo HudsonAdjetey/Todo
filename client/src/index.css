@@ -58,6 +58,32 @@ body {
   cursor: pointer;
 }
 
+.create-button {
+  background-color: rgb(108, 115, 148);
+  border: 1.5px solid rgb(108, 115, 148);
+
+  color: rgb(108, 115, 148);
+  text-transform: uppercase;
+}
+
+.create-button:hover {
+  background-color: rgb(131, 138, 172);
+  color: white;
+}
+
+.create-button:active {
+  background-color: rgb(108, 115, 148);
+
+  color: white;
+}
+
+.button-container button:is(.signout) {
+  background-color: rgb(255, 175, 163);
+  border: 1.5px solid rgb(255, 175, 163);
+  color: white;
+  text-transform: uppercase;
+}
+
 .app {
   background-color: rgb(255, 255, 255);
   box-shadow: rgba(0, 0, 0, 0.05) 0 6px 24px rgba(0, 0, 0, 0.08) 0 0 0 1px;
