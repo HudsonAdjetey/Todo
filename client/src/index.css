@@ -14,6 +14,14 @@ body {
   align-items: center;
   gap: 1rem;
 }
+:where(button) {
+  margin: 0;
+  padding: 5px 10px;
+  border-radius: 12px;
+  background-color: transparent;
+  font-size: 10px;
+  cursor: pointer;
+}
 
 .button-container button {
   margin: 0;
@@ -21,6 +29,7 @@ body {
   border-radius: 12px;
   background-color: transparent;
   font-size: 10px;
+  cursor: pointer;
 }
 
 .edit-button,
@@ -61,7 +70,8 @@ body {
   cursor: pointer;
 }
 
-.create-button, .create {
+.create-button,
+.create {
   background-color: rgb(108, 115, 148);
   border: 1.5px solid rgb(108, 115, 148);
 
@@ -69,7 +79,8 @@ body {
   text-transform: uppercase;
 }
 
-.create-button:hover, .create:hover {
+.create-button:hover,
+.create:hover {
   background-color: rgb(131, 138, 172);
   color: white;
 }
