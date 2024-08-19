@@ -8,7 +8,7 @@ body {
   font-family: sans-serif;
 }
 
-.button-container {
+.button-container, .info-container {
   display: flex;
   align-items: center;
   gap: 1rem;
@@ -37,4 +37,14 @@ body {
   display: flex;
   justify-content: space-between;
   border-bottom: rgba(0, 0, 0, 0.05) 1px solid;
+}
+
+.list-item {
+  width: 100%;
+  margin: 10px 0;
+  border-radius: 10px;
+  box-shadow: rgba(0, 0, 0, 0.08) 0 0 0 1px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }

@@ -1,9 +1,7 @@
-import React from 'react'
+import React from "react";
 
 const ProgressBar = () => {
-  return (
-    <div>ProgressBar</div>
-  )
-}
+  return <div>ProgressBar</div>;
+};
 
-export default ProgressBar
+export default ProgressBar;
