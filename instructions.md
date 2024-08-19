@@ -1,6 +1,4 @@
-Here's a README for your todo app:
 
----
 
 # Todo App
 
