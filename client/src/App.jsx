@@ -3,17 +3,19 @@ import ListHeader from "./components/ListHeader";
 import ListItem from "./components/ListItem";
 import { getData as fnData } from "./components/fn";
 import Auth from "./components/Auth";
-
+import { useCookies } from "react-cookie";
 const App = () => {
-  const authToken = false;
   const fetchDatas = fnData("test@gmail.com");
+  const [cookies, setCookies, removeCookie] = useCookies(null, {
+    doNotParse: true,
+  });
+  const authToken = cookies.Auth;
+  const email = cookies.Email;
 
   const [tasks, setTaks] = useState([]);
   const getData = async () => {
     try {
-      const result = await fetch(
-        `${import.meta.env.VITE_SERVER_URL}/${"test@gmail.com"}`
-      );
+      const result = await fetch(`${import.meta.env.VITE_SERVER_URL}/${email}`);
       const data = await result.json();
       setTaks(data);
       console.log(data);

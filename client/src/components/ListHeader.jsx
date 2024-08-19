@@ -1,12 +1,17 @@
 import React, { useState } from "react";
 import Modal from "./Modal";
-
+import { useCookies } from "react-cookie";
 const ListHeader = ({ listName, getData }) => {
+  const [cookies, _, removeCookies] = useCookies(["Email", "Auth"]);
   const [showModal, setShowModal] = useState(false);
   const signOut = () => {
     console.log("signpt");
+    // remove cookie
+    removeCookies("Email");
+    removeCookies("Auth");
+    window.location.reload();
   };
-
+  const AuthToken = cookies.Email && cookies.Auth;
   return (
     <div className="list-header">
       <h1>{listName}</h1>
@@ -18,7 +23,7 @@ const ListHeader = ({ listName, getData }) => {
           Add New
         </button>
         <button className="signout" onClick={signOut}>
-          Sign Out
+          {AuthToken ? "Sign Out" : "Sign In"}
         </button>
       </div>
       {showModal && (

@@ -1,14 +1,20 @@
 import React, { useState } from "react";
-import {useCookie} from 'react-cookie'
+import { useCookies } from "react-cookie";
 const Auth = () => {
-  const [cookies, setCookies, removeCookie] useCookie(null)
+  const [cookies, setCookies, removeCookie] = useCookies(["Email", "Auth"], {
+    sameSite: "strict",
+    path: "/",
+    expires: new Date(Date.now() + 3600000), // 1 hour
+    // secure: true, // only send cookies over HTTPS
+    doNotParse: true,
+  });
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   // confirm password
   const [confirmPassword, setConfirmPassword] = useState("");
   const [isLogin, setIsLogin] = useState(true);
   const [error, setError] = useState("");
-
+  
   const viewLogin = (status) => {
     setError(null);
     setIsLogin(status);
@@ -51,12 +57,18 @@ const Auth = () => {
         setEmail("");
         setPassword("");
         setConfirmPassword("");
+        setCookies("Email", data.email, {
+          expires: new Date(Date.now() + 3600000),
+          sameSite: "strict",
+        });
+        setCookies("Auth", data.token, {
+          expires: new Date(Date.now() + 3600000),
+          sameSite: "strict",
+        });
+        window.location.reload();
       }
-      console.log(data);
     } catch (error) {
       if (res.status == 401 || 404) {
-        setCookies('Email', res.email)
-        setCookies('Email', res.token)
         setError(res?.message);
       } else {
         setError("An error occurred, please try again later");
