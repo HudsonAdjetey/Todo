@@ -1,7 +1,7 @@
 import React from "react";
 
-const ProgressBar = () => {
-  return <div>ProgressBar</div>;
+const ProgressBar = ({ progressValue }) => {
+  return <div>{progressValue}%</div>;
 };
 
 export default ProgressBar;

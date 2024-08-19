@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { getData } from "./fn";
 
 const Modal = ({ modeValue = "edit", modalShow, setShowModal, task }) => {
   const mode = modeValue;
@@ -19,6 +18,21 @@ const Modal = ({ modeValue = "edit", modalShow, setShowModal, task }) => {
     });
   };
 
+  const editData = async (e) => {
+    e.preventDefault();
+    try {
+      await fetch(`http://localhost:5294/todos/${task.id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const postData = async (e) => {
     console.log(data);
     e.preventDefault();
@@ -33,7 +47,6 @@ const Modal = ({ modeValue = "edit", modalShow, setShowModal, task }) => {
       if (resp.status === 201) {
         console.log("success");
         setShowModal(false);
-        // getData("test@gmail.com");
       }
     } catch (error) {
       console.error(error);
@@ -83,7 +96,7 @@ const Modal = ({ modeValue = "edit", modalShow, setShowModal, task }) => {
           <input
             type="submit"
             className={mode}
-            onClick={editMode ? "" : postData}
+            onClick={editMode ? editData : postData}
           />
         </form>
       </div>

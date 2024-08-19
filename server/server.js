@@ -41,6 +41,21 @@ app.post("/todos", async (req, res, next) => {
   }
 });
 
+// edit todo
+app.put("/todos", async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const { title, progress, user_email, date } = req.body;
+    const response = await pool.query(
+      `UPDATE todos SET title=$1, progress=$2, user_email=$3, date=$4 WHERE id=$5 RETURNING *`,
+      [title, progress, user_email, date, id]
+    );
+    res.status(200).json(response.rows[0]);
+  } catch (error) {
+    console.log(error);
+  }
+});
+
 // all
 app.use("*", (_, res, next) => {
   const format = _.accepts(["json", "html", "text"]);

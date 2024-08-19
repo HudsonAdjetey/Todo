@@ -12,7 +12,7 @@ const ListItem = ({ task }) => {
         <TickIcon />
         <p className="task-title"> {task.title}</p>
 
-        <ProgressBar />
+        <ProgressBar progressValue={task.progress} />
       </div>
       <div className="button-container">
         <button
@@ -32,7 +32,6 @@ const ListItem = ({ task }) => {
           modalShow={showModal}
           setShowModal={setShowModal}
           task={task}
-          getData={getData}
         />
       )}
     </li>
