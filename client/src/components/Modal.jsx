@@ -1,10 +1,23 @@
-import React from "react";
+import React, { useState } from "react";
 
 const Modal = () => {
-  const mode = "create";
-  const handleChange = () => {
-    console.log("Changing");
+  const mode = "edit";
+  const editMode = mode === "edit";
+  const [data, setData] = useState({
+    user_email: "",
+    title: "",
+    progress: 0,
+    date: editMode ? "" : new Date(),
+  });
+  const handleChange = (e) => {
+    setData((prev) => {
+      return {
+        ...prev,
+        [e.target.name]: e.target.value,
+      };
+    });
   };
+
   return (
     <div className="overlay">
       <div className="modal">
@@ -19,18 +32,19 @@ const Modal = () => {
             maxLength={30}
             placeholder="Your task goes here"
             name="title"
-            value={""}
+            value={data.title}
             onChange={handleChange}
           />
           <br />
+          <label htmlFor="range">Drag to select your current progress</label>
           <input
+            id="range"
             type="range"
             required
             min="0"
             max="100"
-            step="1"
             name="progress"
-            value={""}
+            value={parseInt(data.progress)}
             onChange={handleChange}
           />
           <input type="submit" className={mode} />

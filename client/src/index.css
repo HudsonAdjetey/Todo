@@ -23,17 +23,20 @@ body {
   font-size: 10px;
 }
 
-.edit-button {
+.edit-button,
+.edit {
   border: 1.5px solid rgb(141, 181, 145);
   color: rgb(141, 181, 145);
   background-color: transparent;
   text-transform: uppercase;
 }
-.edit-button:hover {
+.edit-button:hover,
+.edit:hover {
   background-color: rgb(142, 223, 186);
   color: white;
 }
-.edit-button:active {
+.edit-button:active,
+.edit:active {
   border: 1.5px solid rgba(141, 181, 145);
   background-color: rgb(142, 223, 186);
   color: white;
@@ -58,15 +61,15 @@ body {
   cursor: pointer;
 }
 
-.create-button {
+.create-button, .create {
   background-color: rgb(108, 115, 148);
   border: 1.5px solid rgb(108, 115, 148);
 
-  color: rgb(108, 115, 148);
+  color: rgb(181, 193, 255);
   text-transform: uppercase;
 }
 
-.create-button:hover {
+.create-button:hover, .create:hover {
   background-color: rgb(131, 138, 172);
   color: white;
 }
@@ -142,4 +145,32 @@ body {
 
   max-width: 500px;
   width: 100%;
+}
+
+.form-title-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+.form-title-container :where(button) {
+  border: none;
+  outline: none;
+  background-color: transparent;
+  color: red;
+}
+
+.modal form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.modal label {
+  font-weight: bold;
+  font-size: 13px;
+}
+form input {
+  padding: 12px 16px;
+  border-radius: 5px;
+  border: 1px solid rgb(230, 232, 236);
 }
