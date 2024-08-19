@@ -4,19 +4,22 @@ const express = require("express");
 const pool = require("./db.config");
 const app = express();
 const PORT = process.env.PORT || 5614;
+const cors = require("cors");
 
 app.use(express());
-
+app.use(cors());
 app.use(express.static(path.join(__dirname, "public")));
 
-app.get("/todos", async (req, res) => {
+app.get("/todos/:userEmail", async (req, res, next) => {
   try {
     const response = await pool.query(
-      `SELECT EXTRACT(YEAR FROM date) AS year FROM todos;`
+      `SELECT * FROM todos WHERE user_email = $1`,
+      [req.params.userEmail]
     );
     res.status(200).json(response.rows);
   } catch (error) {
     console.log(error);
+    next(error);
   }
 });
 // all
