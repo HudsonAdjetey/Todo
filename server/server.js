@@ -11,6 +11,7 @@ app.use(express());
 app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "public")));
+const jwt = require("jsonwebtoken");
 
 app.get("/todos/:userEmail", async (req, res, next) => {
   try {
@@ -75,7 +76,7 @@ app.delete("/todos/:id", async (req, res, next) => {
 
 // signup
 
-app.post("/signup", async (req, res, next) => {
+app.post("/todos/signup", async (req, res, next) => {
   try {
     const { email, password } = req.body;
     // generate salt
@@ -87,15 +88,23 @@ app.post("/signup", async (req, res, next) => {
     if (userExist.rows.length > 0) {
       return res.status(409).json({ message: "User already exists" });
     }
-    const genSalt = await bcrypt.genSalt(10);
-    const hashed_password = await bcrypt.hash(password, genSalt);
+    const genSalt = bcrypt.genSaltSync(10);
+    const hashed_password = bcrypt.hashSync(password, genSalt);
     const id = uuid();
 
     const response = await pool.query(
       `INSERT INTO users (id, email, hashed_password) VALUES ($1, $2, $3) RETURNING *`,
       [id, email, hashed_password]
     );
-    return res.status(201).json(response.rows[0]);
+    const token = jwt.sign({ email }, process.env.JWT_SECRET, {
+      expiresIn: "1hr",
+    });
+    console.log(response);
+    return res.status(201).json({
+      message: "User created successfully",
+      user: email,
+      token,
+    });
   } catch (error) {
     console.log(error);
     next(error);
@@ -104,7 +113,7 @@ app.post("/signup", async (req, res, next) => {
 
 // login
 
-app.post("/login", async (req, res, next) => {
+app.post("/todos/login", async (req, res, next) => {
   try {
     const { email, password } = req.body;
     const response = await pool.query(`SELECT * FROM users WHERE email=$1`, [
@@ -115,16 +124,15 @@ app.post("/login", async (req, res, next) => {
     }
     const validPassword = await bcrypt.compare(
       password,
-      response.rows[0].password
+      response.rows[0].hashed_password
     );
     if (!validPassword) {
       return res.status(401).json({ message: "Invalid credentials" });
     }
-    const token = jwt.sign(
-      { userId: response.rows[0].id },
-      process.env.JWT_SECRET
-    );
-    return res.json({ token });
+    const token = jwt.sign({ userId: response.rows[0].id }, process.env.IDX, {
+      expiresIn: "1hr",
+    });
+    return res.status(200).json({ email, token, message: "Logged In" });
   } catch (error) {
     console.log(error);
     next(error);

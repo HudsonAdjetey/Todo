@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-
+import {useCookie} from 'react-cookie'
 const Auth = () => {
+  const [cookies, setCookies, removeCookie] useCookie(null)
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   // confirm password
@@ -15,30 +16,52 @@ const Auth = () => {
 
   const handleSubmit = async (e, endpoint) => {
     e.preventDefault();
-    if (isLogin) {
-      if (!email.includes("@") || password.length < 6) {
-        setError("Invalid email or password");
-        return;
+    try {
+      if (isLogin) {
+        if (!email.includes("@") || password.length < 6) {
+          setError("Invalid email or password");
+          console.log("something wrong");
+          return;
+        }
+      } else {
+        // validate email, password and confirm password
+        if (
+          !email.includes("@") ||
+          password.length < 6 ||
+          confirmPassword !== password
+        ) {
+          setError("Invalid email or password");
+          return;
+        }
       }
-    } else {
-      // validate email, password and confirm password
-      if (
-        !email.includes("@") ||
-        password.length < 6 ||
-        confirmPassword !== password
-      ) {
-        setError("Invalid email or password");
-        return;
+
+      const res = await fetch(
+        `${import.meta.env.VITE_SERVER_URL}/${endpoint}`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, password }),
+        }
+      );
+      const data = await res.json();
+      if (res.status == 201 || res.status == 200) {
+        setError(null);
+        // alert("Login successful");
+        // clear form
+        setEmail("");
+        setPassword("");
+        setConfirmPassword("");
+      }
+      console.log(data);
+    } catch (error) {
+      if (res.status == 401 || 404) {
+        setCookies('Email', res.email)
+        setCookies('Email', res.token)
+        setError(res?.message);
+      } else {
+        setError("An error occurred, please try again later");
       }
     }
-
-    const res = await fetch(`${import.meta.env.VITE_SERVER_URL}/${endpoint}`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password }),
-    });
-    const data = await res.json();
-    console.log(data);
   };
 
   return (
